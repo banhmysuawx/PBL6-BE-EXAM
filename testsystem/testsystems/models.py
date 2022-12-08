@@ -81,7 +81,7 @@ class result(models.Model):
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
     time = models.IntegerField()
-    result = models.IntegerField()
+    result = models.FloatField()
     
     def __str__(self):
         return str(self.test.name) + " " + str(self.time) + " " + str(self.result)
