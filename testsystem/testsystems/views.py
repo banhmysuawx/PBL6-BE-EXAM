@@ -51,12 +51,13 @@ class DoTestView(viewsets.ModelViewSet):
                 respond_answers = respond_question['answers']
                 # print(str(correct_answers) + ":" + str(respond_answers))
                 # print(set(correct_answers) == set(respond_answers))
-                if set(respond_answers).issubset(correct_answers):
+                if set(respond_answers).issubset(correct_answers) and len(correct_answers) == len(respond_answers):
                             mark += 1    
         start_time = datetime.datetime.strptime(request.data['time_start'], '%Y-%m-%dT%H:%M:%SZ')
         end_time = datetime.datetime.strptime(request.data['time_done'], '%Y-%m-%dT%H:%M:%SZ')
         time = (end_time - start_time).seconds / 60
         percent = mark/len(question.objects.filter(test=pk))*100
+        percent = round(percent, 2)
         test_id = pk
         user_id = request.data['user_id']
         if result.objects.filter(test_id=test_id, user_id=user_id).exists():
@@ -68,7 +69,6 @@ class DoTestView(viewsets.ModelViewSet):
                     "data": data_result.data
                 },
             )
-        
         result_data = {
             "test": pk,
             "user_id": request.data['user_id'],
@@ -77,7 +77,7 @@ class DoTestView(viewsets.ModelViewSet):
             "time": time,
             "result": percent
         }
-        
+        # print(result_data)
         serializer = ResultSerializer(data=result_data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
