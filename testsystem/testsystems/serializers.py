@@ -5,7 +5,7 @@ from .models import category, test, question, answer, result
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
-        fields = ['id', 'name', 'is_active', 'created_at', 'updated_at', 'description']
+        fields = ['id', 'name', 'is_active']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -61,6 +61,7 @@ class CreateTestSerializer(serializers.ModelSerializer):
             "percent_to_pass": validated_data_temp['percent_to_pass'],
             "description": validated_data_temp['description'],
         }
+        print(test_data)
         serializer_test = TestSerializer(data=test_data)
         serializer_test.is_valid(raise_exception=True)
         test = serializer_test.save()
