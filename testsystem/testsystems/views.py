@@ -83,3 +83,8 @@ class DoTestView(viewsets.ModelViewSet):
         serializer.save()
         
         return Response(serializer.data)
+    
+
+class CategoryView(generics.ListCreateAPIView):
+    queryset = category.objects.filter(is_active=True)
+    serializer_class = CategorySerializer
