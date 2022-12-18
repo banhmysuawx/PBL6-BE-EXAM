@@ -23,6 +23,11 @@ class TestView(viewsets.ModelViewSet):
         serializer = TestSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    def destroy(self, request, pk):
+        queryset = self.get_queryset().filter(id=pk)
+        queryset.delete()
+        return Response("Deleted")
+    
     
     def create(self, request):
         serializer = CreateTestSerializer(data=request.data)
@@ -88,3 +93,23 @@ class DoTestView(viewsets.ModelViewSet):
 class CategoryView(generics.ListCreateAPIView):
     queryset = category.objects.filter(is_active=True)
     serializer_class = CategorySerializer
+    
+
+class ResultView(viewsets.ModelViewSet):
+    queryset = result.objects.all()
+    serializer_class = ResultSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = ResultSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, user_id):
+        queryset = self.get_queryset().filter(user_id=user_id)
+        serializer = ResultSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def destroy(self, request, user_id):
+        queryset = self.get_queryset().filter(user_id=user_id)
+        queryset.delete()
+        return Response("Deleted")
