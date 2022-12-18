@@ -43,8 +43,8 @@ class category(models.Model):
 class test(CustomModel):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(category, on_delete=models.CASCADE)
-    time_limit = models.IntegerField()
-    percent_to_pass = models.IntegerField(
+    time_limit = models.FloatField()
+    percent_to_pass = models.FloatField(
         default=0,
         validators=[
             MaxValueValidator(100),
@@ -80,7 +80,7 @@ class result(models.Model):
     user_id = models.IntegerField()
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
-    time = models.IntegerField()
+    time = models.FloatField()
     result = models.FloatField()
     
     def __str__(self):
