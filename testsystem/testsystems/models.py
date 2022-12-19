@@ -77,6 +77,7 @@ class answer(CustomModel):
 
 class result(models.Model):
     test = models.ForeignKey(test, on_delete=models.CASCADE)
+    job_id = models.IntegerField(default=0, null=True, blank=True)
     user_id = models.IntegerField()
     time_start = models.DateTimeField()
     time_end = models.DateTimeField()
