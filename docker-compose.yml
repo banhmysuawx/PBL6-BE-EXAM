@@ -9,7 +9,7 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
     env_file:
-      - ./.env-server
+      - ./.env
     restart: always
   django:
     build:
@@ -20,8 +20,8 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./joblink:/joblink
-    command: bash -c "cd joblink &&
+      - ./testsystem:/testsystem
+    command: bash -c "cd testsystem &&
       python manage.py collectstatic --noinput &&
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:${DJANGO_PORT}"
@@ -33,4 +33,4 @@ services:
 networks:
   default:
     external: true
-    name: pbl6-network
+    name: pbl6-exem-network
