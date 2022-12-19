@@ -23,7 +23,7 @@ COPY requirements.txt /
 RUN pip install -r requirements.txt	
 
 #directory to store app source code
-RUN mkdir /joblink
+RUN mkdir /testsystem
 	
 #copy the app code to image working directory
-COPY ./joblink /joblink
+COPY ./testsystem /testsystem
