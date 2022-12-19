@@ -65,8 +65,9 @@ class DoTestView(viewsets.ModelViewSet):
         percent = round(percent, 2)
         test_id = pk
         user_id = request.data['user_id']
-        if result.objects.filter(test_id=test_id, user_id=user_id).exists():
-            data = result.objects.get(test_id=test_id, user_id=user_id)
+        job_id = request.data['job_id']
+        if result.objects.filter(test_id=test_id, user_id=user_id, job_id=job_id).exists():
+            data = result.objects.get(test_id=test_id, user_id=user_id, job_id=job_id)
             data_result = ResultSerializer(data)
             return Response(
                 {
@@ -77,6 +78,7 @@ class DoTestView(viewsets.ModelViewSet):
         result_data = {
             "test": pk,
             "user_id": request.data['user_id'],
+            "job_id": request.data['job_id'],
             "time_start": start_time,
             "time_end": end_time,
             "time": time,
@@ -104,12 +106,12 @@ class ResultView(viewsets.ModelViewSet):
         serializer = ResultSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, user_id):
-        queryset = self.get_queryset().filter(user_id=user_id)
+    def retrieve(self, request, user_id, job_id):
+        queryset = self.get_queryset().filter(user_id=user_id, job_id=job_id)
         serializer = ResultSerializer(queryset, many=True)
         return Response(serializer.data)
     
-    def destroy(self, request, user_id):
-        queryset = self.get_queryset().filter(user_id=user_id)
+    def destroy(self, request, user_id, job_id):
+        queryset = self.get_queryset().filter(user_id=user_id, job_id=job_id)
         queryset.delete()
         return Response("Deleted")
