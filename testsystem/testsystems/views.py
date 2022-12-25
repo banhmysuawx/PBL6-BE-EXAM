@@ -93,7 +93,7 @@ class DoTestView(viewsets.ModelViewSet):
     
 
 class CategoryView(generics.ListCreateAPIView):
-    queryset = category.objects.filter(is_active=True)
+    queryset = category.objects.all()
     serializer_class = CategorySerializer
     
 
@@ -115,3 +115,18 @@ class ResultView(viewsets.ModelViewSet):
         queryset = self.get_queryset().filter(user_id=user_id, job_id=job_id)
         queryset.delete()
         return Response("Deleted")
+
+class QuestionView(viewsets.ModelViewSet):
+    queryset = question.objects.all()
+    serializer_class = QuestionSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        print(queryset)
+        serializer = QuestionSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk):
+        queryset = self.get_queryset().filter(id=pk)
+        serializer = QuestionSerializer(queryset, many=True)
+        return Response(serializer.data)
